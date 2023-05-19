@@ -1,7 +1,7 @@
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - master
 
 jobs:
   build:
@@ -15,6 +15,12 @@ jobs:
       # In an ideal world, skaffold and kustomize would be in a github action (and we'd pin these binary versions)
     - name: Install skaffold
       run: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && sudo install skaffold /usr/local/bin/
+
+    - name: Cache skaffold image builds & config
+      uses: actions/cache@v2
+      with:
+        path: ~/.skaffold/
+        key: fixed-${{ github.sha }}
 
     - name: Install kustomize
       run: curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash && sudo mv kustomize /usr/local/bin
@@ -31,4 +37,4 @@ jobs:
       run: doctl kubernetes cluster kubeconfig save nodeapp
 
     - name: Deploy to cluster with Skaffold
-      run: skaffold run --tag ${GITHUB_REF#refs/tags/}
+      run: skaffold run 
