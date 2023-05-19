@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: node-app
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: node-app
@@ -32,3 +32,27 @@ spec:
     protocol: TCP
     nodePort: 30003
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysecret
+type: Opaque
+stringData:
+  secret.json: |-
+    {
+      "api_key" : "somesecretgoeshere"
+    }
+
+#kubectl create secret generic mysecret --from-file .\golang\secrets\secret.json
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-config
+data:
+  config.json: |
+    {
+      "environment" : "dev"
+    }
+# kubectl create configmap example-config --from-file ./golang/configs/config.json
