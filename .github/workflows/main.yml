@@ -31,4 +31,4 @@ jobs:
       run: doctl kubernetes cluster kubeconfig save nodeapp
 
     - name: Deploy to cluster with Skaffold
-      run: skaffold run --profile prod --tag ${GITHUB_REF#refs/tags/}
+      run: skaffold run --tag ${GITHUB_REF#refs/tags/}
