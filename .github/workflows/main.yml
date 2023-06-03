@@ -15,7 +15,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-      # In an ideal world, skaffold and kustomize would be in a github action (and we'd pin these binary versions)
     - name: Install skaffold
       run: curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && sudo install skaffold /usr/local/bin/
 
